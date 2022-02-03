@@ -1,10 +1,8 @@
-// connect to database
 const { connectDb } = require("./db");
 
 const CLOTHES_COLLECTION = "clothes";
 const db = connectDb();
 
-// get all products
 exports.getAllProducts = (req, res) => {
   db.collection(CLOTHES_COLLECTION)
     .get()
@@ -19,7 +17,6 @@ exports.getAllProducts = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
-// get a single product
 exports.getProductByID = (req, res) => {
   const { id } = req.params;
 
@@ -34,9 +31,8 @@ exports.getProductByID = (req, res) => {
     .catch((error) => res.status(500).send(err));
 };
 
-// create a new product
 exports.createProduct = (req, res) => {
-  const newProduct = req.body
+  const newProduct = req.body;
 
   db.collection(CLOTHES_COLLECTION)
     .add(newProduct)
@@ -47,26 +43,25 @@ exports.createProduct = (req, res) => {
     });
 };
 
-// update ad single product
-
 exports.updateProduct = (req, res) => {
-    const db = connectDb();
-    let product = req.body
-    const { id } = req.params
-    db.collection(CLOTHES_COLLECTION).doc(id).update(product)
+  const db = connectDb();
+  let product = req.body;
+  const { id } = req.params;
+  db.collection(CLOTHES_COLLECTION)
+    .doc(id)
+    .update(product)
     .then(() => this.getProductByID(req, res))
-    .catch(error => res.status(500).send(error))
-}
-
-
-// delete a single product
+    .catch((error) => res.status(500).send(error));
+};
 
 exports.deleteProduct = (req, res) => {
-    const { id } = req.params
+  const { id } = req.params;
 
-    db.collection(CLOTHES_COLLECTION).doc(id).delete()
+  db.collection(CLOTHES_COLLECTION)
+    .doc(id)
+    .delete()
     .then((timeStamp) => {
-        res.send(`Product ${id} nuked at ${timeStamp}`)
+      res.send(`Product ${id} nuked at ${timeStamp}`);
     })
-    .catch(error => res.status(500).send(error))
-}
+    .catch((error) => res.status(500).send(error));
+};
